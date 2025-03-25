@@ -3,8 +3,6 @@ import { Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton"; // Zależy, czy masz ten komponent w swoim projekcie
 import Image from "next/image"; // Dodaj import Image
 
-
-
 export default function InputSearchBox() {
   const [inputFocused, setInputFocused] = useState(false); // Stan do śledzenia, czy input jest aktywny
 
@@ -12,18 +10,17 @@ export default function InputSearchBox() {
   const [loading, setLoading] = useState(false); // Flaga ładowania
   const [debounceTimer, setDebounceTimer] = useState(null); // Timer dla debouncingu
 
-  const inputRef = useRef(null); // Ref dla inputa
-  const divRef = useRef(null); // Ref dla div'a z wynikami
+  const inputRef = useRef<HTMLInputElement | null>(null); // Ref dla inputa
+  const divRef = useRef<HTMLDivElement | null>(null); // Ref dla div'a z wynikami
 
   const handleFocus = () => {
     setInputFocused(true); // Aktywacja tła wokół inputa
-
   };
 
   // Funkcja do obsługi zmiany tekstu w polu wyszukiwania
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
-   
+
     // Jeśli zapytanie ma więcej niż 2 znaki, zaczynamy wyszukiwanie
     if (query.length > 2) {
       setResults([]); // Reset wyników podczas wyszukiwania
@@ -44,7 +41,7 @@ export default function InputSearchBox() {
   };
 
   // Funkcja do pobierania wyników z API
-  const fetchResults = async (query) => {
+  const fetchResults = async (query: string) => {
     try {
       const response = await fetch(`https://www.bapi2.ebartex.pl/tw/index?tw-nazwa=?${query}?`);
       const data = await response.json(); // Zakładając, że API zwraca dane w tym formacie
@@ -58,15 +55,14 @@ export default function InputSearchBox() {
   };
 
   // Funkcja do sprawdzania kliknięć poza inputem i divem
-  const handleClickOutside = (event) => {
+  const handleClickOutside = (event: MouseEvent) => {
     if (
       inputRef.current &&
-      !inputRef.current.contains(event.target) &&
+      !inputRef.current.contains(event.target as Node) &&
       divRef.current &&
-      !divRef.current.contains(event.target)
+      !divRef.current.contains(event.target as Node)
     ) {
       setInputFocused(false); // Zamyka modal, gdy klikniemy poza inputem i divem
-     
     }
   };
 
