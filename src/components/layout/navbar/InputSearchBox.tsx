@@ -3,11 +3,16 @@ import { Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton"; // Zależy, czy masz ten komponent w swoim projekcie
 import Image from "next/image"; // Dodaj import Image
 
+// Define the type for the result structure
+interface SearchResult {
+  nazwa: string; // Assuming 'nazwa' is a string, adjust if it's different
+}
+
 export default function InputSearchBox() {
   const [inputFocused, setInputFocused] = useState(false); // Stan do śledzenia, czy input jest aktywny
-  const [results, setResults] = useState([]); // Wyniki wyszukiwania
+  const [results, setResults] = useState<SearchResult[]>([]); // Wyniki wyszukiwania z typem SearchResult[]
   const [loading, setLoading] = useState(false); // Flaga ładowania
-  const [debounceTimer, setDebounceTimer] = useState<ReturnType<typeof setTimeout> | null>(null); // Typowanie debounceTimer
+  const [debounceTimer, setDebounceTimer] = useState<ReturnType<typeof setTimeout> | null>(null); // Timer dla debouncingu
 
   const inputRef = useRef<HTMLInputElement | null>(null); // Ref dla inputa
   const divRef = useRef<HTMLDivElement | null>(null); // Ref dla div'a z wynikami
@@ -43,7 +48,7 @@ export default function InputSearchBox() {
   const fetchResults = async (query: string) => {
     try {
       const response = await fetch(`https://www.bapi2.ebartex.pl/tw/index?tw-nazwa=?${query}?`);
-      const data = await response.json(); // Zakładając, że API zwraca dane w tym formacie
+      const data: SearchResult[] = await response.json(); // Typowanie odpowiedzi jako SearchResult[]
       setResults(data); // Zaktualizuj wyniki
     } catch (error) {
       console.error("Błąd podczas pobierania wyników:", error);
