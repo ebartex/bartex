@@ -3,7 +3,11 @@ import { Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton"; // Zależy, czy masz ten komponent w swoim projekcie
 import Image from "next/image"; // Dodaj import Image
 
-export default function InputSearchBox({ setIsModalOpen }) {
+interface InputSearchBoxProps {
+  setIsModalOpen: (isOpen: boolean) => void;
+}
+
+export default function InputSearchBox({ setIsModalOpen }: InputSearchBoxProps) {
   const [inputFocused, setInputFocused] = useState(false); // Stan do śledzenia, czy input jest aktywny
   const [searchQuery, setSearchQuery] = useState(""); // Przechowywanie zapytania
   const [results, setResults] = useState([]); // Wyniki wyszukiwania
@@ -146,7 +150,10 @@ export default function InputSearchBox({ setIsModalOpen }) {
             {/* Dodatkowa zawartość, np. podpowiedzi */}
             {loading ? (
               // Wyświetlanie skeletonu podczas ładowania
-              <Skeleton className="h-12 mb-2 bg-slate-100" />
+              [...Array(5)].map((_, index) => (
+                <Skeleton key={index} className="h-12 mb-2 bg-slate-100" />
+              ))              
+           
             ) : results.length > 0 ? (
               results.map((result, index) => (
                 <div key={index} className="flex items-center space-x-4 hover:bg-slate-200 p-2 rounded-md cursor-pointer">
@@ -159,11 +166,7 @@ export default function InputSearchBox({ setIsModalOpen }) {
             ) : (
               <p>Brak wyników</p>
             )}
-            <div className="p-4 border-t border-gray-200">
-              <button className="w-full bg-blue-600 text-white py-2 rounded-md">
-                Przejdź do wyników
-              </button>
-            </div>
+    
           </div>
         )}
       </div>
