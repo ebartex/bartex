@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       {/* Przekazywanie stanu do Navbar */}
-      <Navbar isActive={isActive} setIsActive={setIsActive} />
+      <Navbar/>
     </>
   );
 }
