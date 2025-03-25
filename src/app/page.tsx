@@ -3,7 +3,7 @@ import Navbar from "@/components/layout/navbar/page";
 import { useState } from "react";
 
 export default function Home() {
-  const [isActive, setIsActive] = useState(false);
+
 
   return (
     <>
