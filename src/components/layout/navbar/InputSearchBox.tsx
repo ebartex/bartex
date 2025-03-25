@@ -5,10 +5,9 @@ import Image from "next/image"; // Dodaj import Image
 
 export default function InputSearchBox() {
   const [inputFocused, setInputFocused] = useState(false); // Stan do śledzenia, czy input jest aktywny
-
   const [results, setResults] = useState([]); // Wyniki wyszukiwania
   const [loading, setLoading] = useState(false); // Flaga ładowania
-  const [debounceTimer, setDebounceTimer] = useState(null); // Timer dla debouncingu
+  const [debounceTimer, setDebounceTimer] = useState<ReturnType<typeof setTimeout> | null>(null); // Typowanie debounceTimer
 
   const inputRef = useRef<HTMLInputElement | null>(null); // Ref dla inputa
   const divRef = useRef<HTMLDivElement | null>(null); // Ref dla div'a z wynikami
