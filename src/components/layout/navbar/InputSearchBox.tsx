@@ -3,13 +3,11 @@ import { Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton"; // Zależy, czy masz ten komponent w swoim projekcie
 import Image from "next/image"; // Dodaj import Image
 
-interface InputSearchBoxProps {
-  setIsModalOpen: (isOpen: boolean) => void;
-}
 
-export default function InputSearchBox({ setIsModalOpen }: InputSearchBoxProps) {
+
+export default function InputSearchBox() {
   const [inputFocused, setInputFocused] = useState(false); // Stan do śledzenia, czy input jest aktywny
-  const [searchQuery, setSearchQuery] = useState(""); // Przechowywanie zapytania
+
   const [results, setResults] = useState([]); // Wyniki wyszukiwania
   const [loading, setLoading] = useState(false); // Flaga ładowania
   const [debounceTimer, setDebounceTimer] = useState(null); // Timer dla debouncingu
@@ -19,14 +17,13 @@ export default function InputSearchBox({ setIsModalOpen }: InputSearchBoxProps) 
 
   const handleFocus = () => {
     setInputFocused(true); // Aktywacja tła wokół inputa
-    setIsModalOpen(true); // Przyciemnia tło wokół inputa
+
   };
 
   // Funkcja do obsługi zmiany tekstu w polu wyszukiwania
   const handleSearchChange = (event) => {
     const query = event.target.value;
-    setSearchQuery(query);
-
+   
     // Jeśli zapytanie ma więcej niż 2 znaki, zaczynamy wyszukiwanie
     if (query.length > 2) {
       setResults([]); // Reset wyników podczas wyszukiwania
@@ -69,7 +66,7 @@ export default function InputSearchBox({ setIsModalOpen }: InputSearchBoxProps) 
       !divRef.current.contains(event.target)
     ) {
       setInputFocused(false); // Zamyka modal, gdy klikniemy poza inputem i divem
-      setIsModalOpen(false); // Przywraca normalne tło
+     
     }
   };
 
