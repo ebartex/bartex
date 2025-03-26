@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { Search } from "lucide-react";
+import { ChevronRight, Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton"; // Zależy, czy masz ten komponent w swoim projekcie
 import Image from "next/image"; // Dodaj import Image
+import Link from "next/link";
 
 // Define the type for the result structure
 interface SearchResult {
+  id: string;
   nazwa: string; // Assuming 'nazwa' is a string, adjust if it's different
 }
 
@@ -82,8 +84,8 @@ export default function InputSearchBox() {
       {/* Przyciemnione tło wokół inputa */}
       {inputFocused && (
         <div
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 z-10"
-          style={{ top: "0", left: "0", width: "100%", height: "100%" }}
+          className="fixed inset-0 bg-gray-600 z-10"
+          style={{ top: "0", left: "0", width: "100%", height: "100%", opacity: 0.8 }}
         />
       )}
 
@@ -139,32 +141,54 @@ export default function InputSearchBox() {
 
         {/* Div pod inputem, który nie wpływa na pozycję inputa */}
         {inputFocused && (
-          <div
-            ref={divRef} // Dodajemy ref do div'a
-            className="h-100 absolute top-full left-0 w-full bg-white border border-gray-300 mt-2 p-4 rounded-md z-10"
-            style={{ overflowY: "auto" }} // Stała wysokość z przewijaniem
-          >
-            {/* Dodatkowa zawartość, np. podpowiedzi */}
-            {loading ? (
-              // Wyświetlanie skeletonu podczas ładowania
-              [...Array(5)].map((_, index) => (
-                <Skeleton key={index} className="h-12 mb-2 bg-slate-100" />
-              ))              
-           
-            ) : results.length > 0 ? (
-              results.map((result, index) => (
-                <div key={index} className="flex items-center space-x-4 hover:bg-slate-200 p-2 rounded-md cursor-pointer">
-                  <span>
-                    <Image src="/products_thumbs.png" alt="logo" width={30} height={30} />
-                  </span>
-                  <span>{result.nazwa}</span> {/* Zaktualizuj pole, jeśli struktura danych jest inna */}
-                </div>
-              ))
-            ) : (
-              <p>Brak wyników</p>
-            )}
-    
+          <div ref={divRef}  className="h-102 absolute top-full left-0 w-full bg-white border border-gray-300 mt-2 pt-4 rounded-md z-10">
+          <div className=" border-b border-gray-200 h-80" style={{ overflowY: "auto" }} // Stała wysokość z przewijaniem
+            >
+              {/* Dodanie elementu z pozycjonowaniem absolute */}
+
+
+              {/* Dodatkowa zawartość, np. podpowiedzi */}
+              {loading ? (
+                [...Array(5)].map((_, index) => (
+                  <Skeleton key={index} className="h-12 mb-2 bg-slate-100" />
+                ))              
+              ) : results.length > 0 ? (
+                results.map((result, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center space-x-4 hover:bg-slate-200 p-2 pl-4 rounded-md cursor-pointer"
+                  >
+                    <Link href={`/product/view/${result.id}/slug`} className="flex items-center w-full">
+                      {/* Obrazek i nazwa w jednej linii */}
+                      <Image
+                        src="/products_thumbs.png"
+                        alt="logo"
+                        width={30}
+                        height={30}
+                        className="mr-2" // Dodanie marginesu po prawej stronie obrazu
+                      />
+                      <span className="text-sm truncate">{result.nazwa}</span> {/* Dodajemy truncate, aby nazwa nie wychodziła poza kontener */}
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p>Brak wyników</p>
+              )}
+              
+            </div>
+            <div className="absolute bottom-2 right-0 z-20 w-full ">
+              <div className="pl-4 pr-4">
+            <div className="flex pb-2">
+             <button className=" 
+             w-full text-slate-700 py-2 pl-4 pr-4 flex justify-between items-center hover:bg-slate-200 cursor-pointer">
+              <span>Przejdź do wyników</span>
+              <ChevronRight />
+            </button>
           </div>
+          </div>
+              </div>
+            </div>
+
         )}
       </div>
     </>

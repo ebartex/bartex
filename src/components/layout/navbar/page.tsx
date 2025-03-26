@@ -12,6 +12,7 @@ export default function Navbar() {
             <Image src="/bartex.png" alt="logo" width={100} height={100} />
             {/* InputSearchBox */}
             <InputSearchBox />
+            sd
           </div>
         </div>
       </nav>
