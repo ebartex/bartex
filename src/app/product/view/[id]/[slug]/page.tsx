@@ -36,7 +36,8 @@ const ProductPage = () => {
         }
 
         setLoading(false); // Po zakończeniu ładowania zmieniamy stan
-      } catch (error) {
+      } catch (err) {
+        console.error(err); // Wyświetlanie błędu w konsoli
         setError("Błąd podczas pobierania danych produktu");
         setLoading(false);
       }
